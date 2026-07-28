@@ -17,6 +17,10 @@ Example 2:
 Input: head = [1, 2, 3, 4, 5], k = 3
 Output: [3, 2, 1, 4, 5]
 """
+from reverse_first_n_nodes_of_linked_list import (
+    reverse_first_n_sol1,
+    reverse_first_n_sol2,
+)
 
 
 class ListNode:
@@ -27,8 +31,14 @@ class ListNode:
 
 # Solution 1
 def reverse_k_group_sol1(head: ListNode | None, k: int) -> ListNode | None:
-    # TODO: write your first solution
-    raise NotImplementedError("Implement reverse_k_group_sol1")
+    a = b = head
+    for _ in range (k):
+        if b is None: # make sure b is accessible first
+            return head
+        b = b.next
+    newHead = reverse_first_n_sol1(a, k)
+    a.next = reverse_k_group_sol1(b, k)
+    return newHead #return the head of this new list
 
 
 # Solution 2
@@ -92,10 +102,9 @@ def run_basic_tests(solution_func) -> None:
 
 
 if __name__ == "__main__":
-    # run_basic_tests(reverse_k_group_sol1)
+    run_basic_tests(reverse_k_group_sol1)
     # run_basic_tests(reverse_k_group_sol2)
     # run_basic_tests(reverse_k_group_sol3)
-    pass
 
 
 # =========================

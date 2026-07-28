@@ -25,8 +25,21 @@ class ListNode:
 
 # Solution 1
 def swap_pairs_sol1(head: ListNode | None) -> ListNode | None:
-    # TODO: write your first solution
-    raise NotImplementedError("Implement swap_pairs_sol1")
+    dummy = ListNode(-1)
+    dummy.next = head
+    prev = dummy
+
+    while prev.next is not None and prev.next.next is not None:
+        a = prev.next
+        b = prev.next.next
+
+        prev.next = b
+        a.next = b.next # do this before b.next = a, otherwise original b.next is lost
+        b.next = a
+
+        prev = a # mve forward one, right before the next pair
+
+    return dummy.next
 
 
 # Solution 2
@@ -87,10 +100,9 @@ def run_basic_tests(solution_func) -> None:
 
 
 if __name__ == "__main__":
-    # run_basic_tests(swap_pairs_sol1)
+    run_basic_tests(swap_pairs_sol1)
     # run_basic_tests(swap_pairs_sol2)
     # run_basic_tests(swap_pairs_sol3)
-    pass
 
 
 # =========================
