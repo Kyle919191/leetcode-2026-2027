@@ -17,6 +17,9 @@ Output: [2, 3]
 """
 
 
+from locale import currency
+
+
 class ListNode:
     def __init__(self, val: int = 0, next: "ListNode | None" = None):
         self.val = val
@@ -57,28 +60,41 @@ def delete_duplicates_ii_sol1(head: ListNode | None) -> ListNode | None:
 
 # Solution 2
 def delete_duplicates_ii_sol2(head: ListNode | None) -> ListNode | None:
-    dummy = ListNode(0, head)
+    dummy = ListNode(10000)
+    dummy.next = head
     prev = dummy
     cur = head
-
     while cur is not None:
-        # If current value repeats, skip all nodes with this value.
-        if cur.next is not None and cur.val == cur.next.val:
-            dup_val = cur.val
-            while cur is not None and cur.val == dup_val:
+        if cur.next is not None and cur.val == cur.next.val: # if we use cur.next we must first make sure it exists
+            dup = cur.val
+            while cur is not None and cur.val == dup: #same, if we use cur, we must first make sure it exists
                 cur = cur.next
+
             prev.next = cur
         else:
             prev = cur
             cur = cur.next
-
     return dummy.next
 
 
 # Solution 3 (optional)
 def delete_duplicates_ii_sol3(head: ListNode | None) -> ListNode | None:
-    # TODO: write your third solution (optional)
-    raise NotImplementedError("Implement delete_duplicates_ii_sol3")
+    if head is None or head.next is None:
+        return head
+    
+    if head.val != head.next.val:
+        head.next = delete_duplicates_ii_sol3(head.next)
+        return head
+    
+    # if duplicates, clear all of them then proceed
+    while head.next is not None and head.val == head.next.val:
+        head = head.next
+    
+    return delete_duplicates_ii_sol3(head.next) # call with head.next instead of head because
+    # head is the last node of the duplicate nodes
+    
+    
+
 
 
 def build_linked_list(values: list[int]) -> ListNode | None:
@@ -129,9 +145,9 @@ def run_basic_tests(solution_func) -> None:
 
 
 if __name__ == "__main__":
-    run_basic_tests(delete_duplicates_ii_sol1)
-    # run_basic_tests(delete_duplicates_ii_sol2)
-    # run_basic_tests(delete_duplicates_ii_sol3)
+    #run_basic_tests(delete_duplicates_ii_sol1)
+    #run_basic_tests(delete_duplicates_ii_sol2)
+    run_basic_tests(delete_duplicates_ii_sol3)
     pass
 
 
