@@ -18,8 +18,10 @@ Both get and put should run in O(1) average time complexity.
 # Solution 1
 class LRUCacheSol1:
     def __init__(self, capacity: int):
-        # TODO: write your first solution
-        raise NotImplementedError("Implement LRUCacheSol1")
+        self.capacity = capacity
+        self.cache = {}
+        self.left = Node()
+        self.right = Node()
 
     def get(self, key: int) -> int:
         raise NotImplementedError("Implement get()")

@@ -31,8 +31,22 @@ class Node:
 
 # Solution 1
 def copy_random_list_sol1(head: Node | None) -> Node | None:
-    # TODO: write your first solution
-    raise NotImplementedError("Implement copy_random_list_sol1")
+    old_to_copy = {None: None} # handle the None "node" as some nodes may point to it
+
+    # first pass: resolve value first, create independent nodes
+    cur = head
+    while cur is not None:
+        old_to_copy[cur] = Node(cur.val)
+        cur = cur.next
+    
+    # second pass: resolve .next .random for the new copy list
+    cur = head
+    while cur is not None:
+        copy = old_to_copy[cur]
+        copy.next = old_to_copy[cur.next]
+        copy.random = old_to_copy[cur.random]
+        cur = cur.next
+    return old_to_copy[head] # the mapping is the new copied list
 
 
 # Solution 2
@@ -104,10 +118,10 @@ def run_basic_tests(solution_func) -> None:
 
 
 if __name__ == "__main__":
-    # run_basic_tests(copy_random_list_sol1)
+    run_basic_tests(copy_random_list_sol1)
     # run_basic_tests(copy_random_list_sol2)
     # run_basic_tests(copy_random_list_sol3)
-    pass
+
 
 
 # =========================
