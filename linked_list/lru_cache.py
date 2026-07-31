@@ -15,19 +15,66 @@ Both get and put should run in O(1) average time complexity.
 """
 
 
+from re import S
+
+
+class Node:
+    #doubly linked list: easy to remove
+    def __init__(self, key: int = 0, val: int = 0):
+        self.key = key
+        self.val = val
+        self.prev = None
+        self.next = None
+
+
 # Solution 1
 class LRUCacheSol1:
     def __init__(self, capacity: int):
         self.capacity = capacity
-        self.cache = {}
+        self.cache = {} # cache maps keys to Nodes, then node can access val
         self.left = Node()
         self.right = Node()
 
+        self.left.next = self.right
+        self.right.prev = self.left
+
+    #helper1 
+    def remove(self, node):
+        node.prev.next = node.next
+        node.next.prev = node.prev
+    
+    #helper2
+    def insert(self, node):
+        self.right.prev.next = node
+        node.prev = self.right.prev
+
+        node.next = self.right
+        self.right.prev = node
+
     def get(self, key: int) -> int:
-        raise NotImplementedError("Implement get()")
+        #idea: we use cache (hashmap) to quickly access, use linked list to keep track
+        if key not in self.cache:
+            return -1
+
+        node = self.cache[key]
+        self.remove(node)
+        self.insert(node)
+
+        return node.val
 
     def put(self, key: int, value: int) -> None:
-        raise NotImplementedError("Implement put()")
+        if key in self.cache:
+            self.remove(self.cache[key]) # if in cache, remove first
+        
+        node = Node(key, value)
+        self.cache[key] = node
+        self.insert(node)
+
+        if len(self.cache) > self.capacity:
+            lru = self.left.next
+            self.remove(lru)
+            del self.cache[lru.key]
+
 
 
 # Solution 2
@@ -83,7 +130,7 @@ def run_basic_tests(cache_class) -> None:
 
 
 if __name__ == "__main__":
-    # run_basic_tests(LRUCacheSol1)
+    run_basic_tests(LRUCacheSol1)
     # run_basic_tests(LRUCacheSol2)
     # run_basic_tests(LRUCacheSol3)
     pass
