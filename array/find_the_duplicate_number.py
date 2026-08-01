@@ -30,22 +30,22 @@ Output: 3
 def find_duplicate_sol1(nums: list[int]) -> int:
     fast = slow = 0
     while True:
-        fast = nums[nums[fast]] # equivalent to 
+        fast = nums[nums[fast]] # equivalent to
         slow = nums[slow]
         if slow == fast:
             break
-    # cannot do:   
+    # cannot do:
     # while slow != fast:
-    #    fast = nums[nums[fast]] # equivalent to 
+    #    fast = nums[nums[fast]] # equivalent to
     #    slow = nums[slow]
     # because fast and slow start with the same value
-    # do this as alternative: 
+    # do this as alternative:
     # slow = nums[0]
     # fast = nums[nums[0]]
     # while slow != fast:
     #     slow = nums[slow]
     #     fast = nums[nums[fast]]
-    
+
     slow = 0 #rewind slow back to head
     while slow != fast:
         fast = nums[fast]

@@ -2,8 +2,8 @@
 
 | Problem | Category | Major DS/Algorithm | Times Practiced | Overall Confidence | Source |
 | --- | --- | --- | --- | --- | --- |
-| `contains_duplicate.py` | Arrays and Hashing | Hash Set | 0 | Easy | NeetCode |
-| `find_the_duplicate_number.py` | Arrays and Hashing | Fast/Slow Pointers (Floyd Cycle Detection) | 0 | Not set yet | LeetCode |
+| `find_the_duplicate_number.py` | Array | Fast/Slow Pointers (Floyd Cycle Detection) | 0 | Not set yet | LeetCode |
+| `valid_anagram.py` | String | Hash Map, Character Count | 0 | Not set yet | NeetCode |
 | `remove_duplicates_from_sorted_array.py` | Array | Two Pointers (Fast/Slow) | 0 | Not set yet | LeetCode |
 | `remove_element.py` | Array | Two Pointers (Overwrite In Place) | 0 | Not set yet | LeetCode |
 | `move_zeroes.py` | Array | Two Pointers (Stable Compaction) | 0 | Not set yet | LeetCode |
