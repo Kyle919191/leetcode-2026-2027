@@ -20,9 +20,32 @@ Output: 4
 
 
 # Solution 1
+# similar to max_consecutive_ones_iii
+# NOTE: the windowMaxCount may face staleness issue after shrinking. but thats fine because
+# instead of being the maximum count in the current window it's more like the largest character count we've reached while expanding windows so far
 def character_replacement_sol1(s: str, k: int) -> int:
-    # TODO: write your first solution
-    raise NotImplementedError("Implement character_replacement_sol1")
+    left = right = 0
+    windowCharCount = [0] * 26 # use array instead of dict for easier access. We can do this because we convert alphabets to numbers via ord
+    windowMaxCount = 0
+    result = 0
+
+    while right < len(s):
+        c = ord(s[right]) - ord('A')
+        windowCharCount[c] += 1
+        windowMaxCount = max(windowMaxCount, windowCharCount[c])
+        right += 1
+
+        # can be switched to an if condition. this would really happen only once
+        while (right - left - windowMaxCount) > k: # just like consecutiveones condition
+            windowCharCount[ord(s[left]) - ord('A')] -= 1
+            left += 1
+        
+         # now we have a valid window: calculate length
+        result = max(result, right - left)
+    
+    return result
+
+        
 
 
 # Solution 2
@@ -65,10 +88,10 @@ def run_basic_tests(solution_func) -> None:
 
 
 if __name__ == "__main__":
-    # run_basic_tests(character_replacement_sol1)
+    run_basic_tests(character_replacement_sol1)
     # run_basic_tests(character_replacement_sol2)
     # run_basic_tests(character_replacement_sol3)
-    pass
+
 
 
 # =========================

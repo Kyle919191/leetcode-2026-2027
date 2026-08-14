@@ -31,6 +31,7 @@ def longest_ones_sol1(nums: list[int], k: int) -> int:
                 one_count -= 1
             left += 1
         
+        # now we have a valid window: calculate length
         max_len = max(max_len, right - left)
     return max_len
 
