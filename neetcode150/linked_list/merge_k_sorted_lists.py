@@ -12,9 +12,6 @@ class ListNode:
 
 
 def merge_k_lists_sol1(lists: list[ListNode | None]) -> ListNode | None:
-    # TODO-TALK: This is k-way merge with a min-heap.
-    # TODO-TALK: I push each list head first, then repeatedly pop the smallest node.
-    # TODO-TALK: After popping one node, I push its next node from the same list.
     # edge case 1
     if lists == []:
         return None
@@ -25,12 +22,15 @@ def merge_k_lists_sol1(lists: list[ListNode | None]) -> ListNode | None:
     for i, node in enumerate(lists):
         # edge case 2
         if node is not None:
+            # TODO-TALK: I initialize heap with one candidate from each list.
             heapq.heappush(pq, (node.val, i, node))
     
     while pq:
+        # TODO-TALK: I always pop the globally smallest current node.
         value, index, node_x = heapq.heappop(pq)
         # edge case 3
         if node_x.next is not None:
+            # TODO-TALK: Then I push the next node from that same list.
             heapq.heappush(pq, (node_x.next.val, index, node_x.next))
         start.next = node_x
         start = start.next

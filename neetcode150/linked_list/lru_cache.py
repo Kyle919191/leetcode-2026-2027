@@ -16,14 +16,13 @@ class Node:
 
 class LRUCacheSol1:
     def __init__(self, capacity: int):
-        # TODO-TALK: I combine a hash map with a doubly linked list.
-        # TODO-TALK: The map gives O(1) key lookup, and the list keeps usage order.
-        # TODO-TALK: Left side is least recently used and right side is most recently used.
         self.capacity = capacity
+        # TODO-TALK: The map gives O(1) access from key to node.
         self.cache = {} # cache maps keys to Nodes, then node can access val
         self.left = Node()
         self.right = Node()
 
+        # TODO-TALK: Left boundary is least recent and right boundary is most recent.
         self.left.next = self.right
         self.right.prev = self.left
 
@@ -41,21 +40,19 @@ class LRUCacheSol1:
         self.right.prev = node
 
     def get(self, key: int) -> int:
-        # TODO-TALK: On get, missing key returns -1.
-        # TODO-TALK: On hit, I move the node to most-recent position and return its value.
         if key not in self.cache:
             return -1
 
         node = self.cache[key]
+        # TODO-TALK: Access makes this key most recently used, so I move it to the right side.
         self.remove(node)
         self.insert(node)
 
         return node.val
 
     def put(self, key: int, value: int) -> None:
-        # TODO-TALK: On put, I remove old node if key already exists, then insert fresh node as most recent.
-        # TODO-TALK: If capacity is exceeded, I evict the least recently used node at the left boundary.
         if key in self.cache:
+            # TODO-TALK: Existing key gets refreshed, so I remove the old node first.
             self.remove(self.cache[key]) # if in cache, remove first
         
         node = Node(key, value)
@@ -63,6 +60,7 @@ class LRUCacheSol1:
         self.insert(node)
 
         if len(self.cache) > self.capacity:
+            # TODO-TALK: If over capacity, I evict from left because that is least recently used.
             lru = self.left.next
             self.remove(lru)
             del self.cache[lru.key]

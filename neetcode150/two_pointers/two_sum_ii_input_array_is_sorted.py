@@ -4,9 +4,6 @@ LeetCode 167 - Two Sum II - Input Array Is Sorted
 
 
 def two_sum_ii_sol1(numbers: list[int], target: int) -> list[int]:
-    # TODO-TALK: The array is sorted, so I can use two pointers from both ends.
-    # TODO-TALK: If the sum is too small, I move left to increase it.
-    # TODO-TALK: If the sum is too large, I move right to decrease it.
     left = 0 #index
     right = len(numbers) - 1
     while left < right:
@@ -14,8 +11,10 @@ def two_sum_ii_sol1(numbers: list[int], target: int) -> list[int]:
         if sum == target:
             return [left+1, right+1]  # the index required by the problem starts from 1
         if sum < target:
+            # TODO-TALK: This sum is too small, so I need a larger value and move left pointer right.
             left += 1 # cannot move right pointer right because right is already at maximum
         elif sum > target:
+            # TODO-TALK: This sum is too large, so I need a smaller value and move right pointer left.
             right -= 1
     return [-1, -1]
 

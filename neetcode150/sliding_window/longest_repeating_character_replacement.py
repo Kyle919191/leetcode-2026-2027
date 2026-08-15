@@ -4,9 +4,6 @@ LeetCode 424 - Longest Repeating Character Replacement
 
 
 def character_replacement_sol1(s: str, k: int) -> int:
-    # TODO-TALK: I maintain a window and track the highest single-character count inside it.
-    # TODO-TALK: The window is valid if window_size - max_count is at most k.
-    # TODO-TALK: If invalid, I shrink from the left until it becomes valid again.
     left = right = 0
     windowCharCount = [0] * 26 # use array instead of dict for easier access. We can do this because we convert alphabets to numbers via ord
     windowMaxCount = 0
@@ -14,16 +11,19 @@ def character_replacement_sol1(s: str, k: int) -> int:
 
     while right < len(s):
         c = ord(s[right]) - ord('A')
+        # TODO-TALK: I expand the window and update the count of this character.
         windowCharCount[c] += 1
         windowMaxCount = max(windowMaxCount, windowCharCount[c])
         right += 1
 
         # can be switched to an if condition. this would really happen only once
         while (right - left - windowMaxCount) > k: # just like consecutiveones condition
+            # TODO-TALK: This window needs too many replacements, so I shrink from the left.
             windowCharCount[ord(s[left]) - ord('A')] -= 1
             left += 1
         
          # now we have a valid window: calculate length
+        # TODO-TALK: Now the window is valid again, so I update the best length.
         result = max(result, right - left)
     
     return result

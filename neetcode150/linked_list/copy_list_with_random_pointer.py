@@ -11,20 +11,19 @@ class Node:
 
 
 def copy_random_list_sol1(head: Node | None) -> Node | None:
-    # TODO-TALK: I map each old node to its new copy node in a first pass.
-    # TODO-TALK: In a second pass, I wire next and random using that mapping.
-    # TODO-TALK: This guarantees all copied pointers reference copied nodes, not original nodes.
     old_to_copy = {None: None} # handle the None "node" as some nodes may point to it
 
     # first pass: resolve value first, create independent nodes
     cur = head
     while cur is not None:
+        # TODO-TALK: First pass only creates copy nodes and fills old-node to new-node mapping.
         old_to_copy[cur] = Node(cur.val)
         cur = cur.next
     
     # second pass: resolve .next .random for the new copy list
     cur = head
     while cur is not None:
+        # TODO-TALK: Second pass wires next and random by looking up mapped copy targets.
         copy = old_to_copy[cur]
         copy.next = old_to_copy[cur.next]
         copy.random = old_to_copy[cur.random]

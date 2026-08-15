@@ -4,11 +4,9 @@ LeetCode 287 - Find the Duplicate Number
 
 
 def find_duplicate_sol1(nums: list[int]) -> int:
-    # TODO-TALK: I treat values as next pointers and run Floyd cycle detection.
-    # TODO-TALK: First phase finds an intersection point inside the cycle.
-    # TODO-TALK: Second phase resets one pointer to start; where they meet again is the duplicate.
     fast = slow = 0
     while True:
+        # TODO-TALK: Phase one moves slow by one step and fast by two steps until they meet.
         fast = nums[nums[fast]] # equivalent to
         slow = nums[slow]
         if slow == fast:
@@ -25,10 +23,12 @@ def find_duplicate_sol1(nums: list[int]) -> int:
     #     slow = nums[slow]
     #     fast = nums[nums[fast]]
 
+    # TODO-TALK: Phase two resets slow to start; moving both one step gives cycle entry.
     slow = 0 #rewind slow back to head
     while slow != fast:
         fast = nums[fast]
         slow = nums[slow]
+    # TODO-TALK: This meeting point is the duplicate value.
     return slow
 
 # Solution 2

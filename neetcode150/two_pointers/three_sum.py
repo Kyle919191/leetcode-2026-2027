@@ -30,10 +30,8 @@ def two_sum_deduplicate_helper(nums, start, target):
 
 
 def three_sum_sol1(nums: list[int]) -> list[list[int]]:
-    # TODO-TALK: I will sort first so duplicate handling and two-pointer search become easy.
-    # TODO-TALK: Then I fix one value and solve two-sum on the suffix for target minus that value.
-    # TODO-TALK: I skip duplicates for the fixed value and also inside two-sum helper.
     target = 0
+    # TODO-TALK: I sort first so the two-sum helper can skip duplicates cleanly.
     nums.sort()
     result = []
 
@@ -41,6 +39,7 @@ def three_sum_sol1(nums: list[int]) -> list[list[int]]:
     n=len(nums)
     while i < n:
         current = nums[i]
+        # TODO-TALK: I fix current as the first number and find the other two numbers in the suffix.
         pairs = two_sum_deduplicate_helper(nums, i+1, target-current)
         if not pairs: 
             i+=1
@@ -53,6 +52,7 @@ def three_sum_sol1(nums: list[int]) -> list[list[int]]:
         # but we still need to handle the duplicate case where i+1 value is same as i value
         # "The key to avoid duplicates is to make sure the first number is not repeated. For the other two numbers, our reused twoSumTarget function already handles duplicates"
         while i < n - 1 and current == nums[i + 1]: # <n+1 to prevent out of bounds when we do nums[i+1]
+            # TODO-TALK: I skip repeated first numbers so triplets are unique.
             i += 1
         i += 1
     return result

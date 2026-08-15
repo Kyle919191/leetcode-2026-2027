@@ -13,15 +13,13 @@ def add_two_numbers_sol1(
     l1: ListNode | None,
     l2: ListNode | None,
 ) -> ListNode | None:
-    # TODO-TALK: I add digit by digit with a carry, exactly like manual addition.
-    # TODO-TALK: If one list is shorter, I treat missing digits as zero.
-    # TODO-TALK: The loop continues while either list has nodes or carry is still nonzero.
     dummy = ListNode(-1)
     p = dummy
     p1, p2 = l1, l2
     carry = 0
 
     while p1 is not None or p2 is not None or carry > 0: # carry>0 case say last digit for p1+p2>10, need trailing number
+        # TODO-TALK: I add the current digits plus carry, just like pen-and-paper addition.
         val = carry
         if p1 is not None: # p1 and p2 can be different length
             val += p1.val
@@ -31,6 +29,7 @@ def add_two_numbers_sol1(
             p2 = p2.next
         single_digit_val = val % 10 #keep val as single digit, 
         #use another variable so original var is kept, allowing next line to work properly
+        # TODO-TALK: I keep only one digit in this node and carry the tens place forward.
         carry = val // 10
 
         p.next = ListNode(single_digit_val)

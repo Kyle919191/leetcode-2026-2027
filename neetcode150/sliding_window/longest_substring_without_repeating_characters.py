@@ -4,24 +4,24 @@ LeetCode 3 - Longest Substring Without Repeating Characters
 
 
 def length_of_longest_substring_sol1(s: str) -> int:
-    # TODO-TALK: I expand the window with right and keep character counts in a map.
-    # TODO-TALK: Whenever a character repeats, I move left until the window is valid again.
-    # TODO-TALK: After each valid state, I update the best window length.
     window = {}
     left = right = result = 0
 
     while right < len(s):
         expanded = s[right]
         right += 1
+        # TODO-TALK: I expand the window by including this character.
         window[expanded] = window.get(expanded, 0) + 1
 
         while window[expanded] > 1: #repeating shows up, need
             # 1)remove this repetition, so it can find the next substring
             # 2)record this valid length after repetition removed
+            # TODO-TALK: This character now repeats, so I shrink from left until it is unique again.
             shrinked = s[left]
             left += 1
             window[shrinked] -= 1
 
+        # TODO-TALK: At this point window has no repeats, so I update the best length.
         result = max(result, right - left)
     return result
 

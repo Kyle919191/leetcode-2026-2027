@@ -10,20 +10,20 @@ class ListNode:
 
 
 def reverse_list_sol1(head: ListNode | None) -> ListNode | None:
-    # TODO-TALK: I reverse pointers in place with three references: prev, cur, and next.
-    # TODO-TALK: Each step flips one arrow, then moves all pointers forward.
-    # TODO-TALK: At the end, prev is the new head.
     if head is None or head.next is None:
         return head
     
     prev, cur, next = None, head, head.next
     while cur is not None:
+        # TODO-TALK: I reverse one link from cur toward prev.
         cur.next = prev
+        # TODO-TALK: Then I advance all pointers to process the next node.
         prev = cur
         cur = next
         if next is not None: # it's next not cur.next, because cur.next is already reversed
             next = next.next #it's next.next not cur.next, because cur.next is already reversed
     
+    # TODO-TALK: When cur becomes null, prev is standing at the new head.
     return prev # because the last iteration when cur is not Null, it does cur=next, which means cur = null, so prev is the last node
 
 

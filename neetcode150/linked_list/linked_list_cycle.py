@@ -10,16 +10,16 @@ class ListNode:
 
 
 def has_cycle_sol1(head: ListNode | None) -> bool:
-    # TODO-TALK: I use slow and fast pointers.
-    # TODO-TALK: If there is a cycle, fast eventually laps slow and they meet.
-    # TODO-TALK: If fast reaches null, the list ends and there is no cycle.
     slow = head
     fast = head
     while fast is not None and fast.next is not None:
+        # TODO-TALK: I move slow by one and fast by two on each step.
         slow = slow.next
         fast = fast.next.next
         if fast == slow:
+            # TODO-TALK: If they meet, the only way that happens is a cycle.
             return True
+    # TODO-TALK: If fast hits null, the list terminates, so no cycle exists.
     return False
 
 

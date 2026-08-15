@@ -26,14 +26,13 @@ def reverse_first_n_sol1(head: ListNode | None, n: int) -> ListNode | None:
 
 
 def reverse_k_group_sol1(head: ListNode | None, k: int) -> ListNode | None:
-    # TODO-TALK: I first check whether there are at least k nodes to reverse.
-    # TODO-TALK: If yes, I reverse exactly k nodes, then recurse on the remaining list.
-    # TODO-TALK: I connect the tail of this reversed block to the result of the recursive call.
     a = b = head
     for _ in range (k):
         if b is None: # make sure b is accessible first
+            # TODO-TALK: Fewer than k nodes remain, so this tail stays as-is.
             return head
         b = b.next
+    # TODO-TALK: I reverse the first k nodes and connect its tail to the recursive result.
     newHead = reverse_first_n_sol1(a, k)
     a.next = reverse_k_group_sol1(b, k)
     return newHead #return the head of this new list

@@ -14,13 +14,12 @@ def merge_two_lists_sol1(
     list2: ListNode | None,
 ) -> ListNode | None: 
 
-    # TODO-TALK: I use a dummy head so appending nodes is uniform and edge cases stay simple.
-    # TODO-TALK: I always attach the smaller front node between list1 and list2.
-    # TODO-TALK: When one list ends, I connect the remainder of the other list.
+    # TODO-TALK: I start with a dummy node so attaching nodes stays uniform.
     dummy = ListNode(-1)
     p = dummy
 
     while list1 is not None and list2 is not None:
+        # TODO-TALK: I compare both front values and attach the smaller node first.
         if list1.val < list2.val:
             p.next = list1
             list1 = list1.next
@@ -30,6 +29,7 @@ def merge_two_lists_sol1(
         p = p.next
         p.next = None
     if list1 is None:
+        # TODO-TALK: One list ended, so I append the remaining nodes from the other list.
         p.next = list2
     if list2 is None:
         p.next = list1

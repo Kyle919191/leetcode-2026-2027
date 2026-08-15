@@ -4,12 +4,10 @@ LeetCode 76 - Minimum Window Substring
 
 
 def min_window_sol1(s: str, t: str) -> str:
-    # TODO-TALK: I expand right until the window covers all required counts from t.
-    # TODO-TALK: Once valid, I shrink left to find the smallest valid window for that right edge.
-    # TODO-TALK: I keep the global best start and length across all valid windows.
     window = {}
     need = {}
     for element in t:
+        # TODO-TALK: I first build the required counts for every character in t.
         need[element] = need.get(element, 0) + 1
     
     left = right = valid = 0
@@ -20,6 +18,7 @@ def min_window_sol1(s: str, t: str) -> str:
         expanded = s[right]
         right += 1
         if expanded in need:
+            # TODO-TALK: I only update counts for characters that are part of the target.
             window[expanded] = window.get(expanded, 0) + 1 # note that it's possible for window[expanded] > need[expanded] later
             if window[expanded] == need[expanded]:
                 valid += 1
@@ -27,6 +26,7 @@ def min_window_sol1(s: str, t: str) -> str:
         while valid == len(need): # one valid means window has at least as much copies of one element as need
             # this now marks the point where we have enough of all need, which means right now this substring between left and right is valid
             if (right - left) < length:
+                # TODO-TALK: This window is valid and smaller, so I store it as current best answer.
                 start = left 
                 length = right - left #recording our global best start and length
             
@@ -34,6 +34,7 @@ def min_window_sol1(s: str, t: str) -> str:
             left += 1
 
             if shrinked in need: # if d in need, then d will also already have an entry in window
+                # TODO-TALK: Before reducing count, I check whether this char was satisfying a need exactly.
                 if window[shrinked] == need[shrinked]:
                     valid -= 1
                 window[shrinked] -= 1 # in expansion, we need to first increment then check for valid, in shrink we first check for valid then decrement

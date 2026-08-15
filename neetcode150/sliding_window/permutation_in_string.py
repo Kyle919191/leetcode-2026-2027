@@ -4,12 +4,10 @@ LeetCode 567 - Permutation in String
 
 
 def check_inclusion_sol1(s1: str, s2: str) -> bool:
-    # TODO-TALK: I build a need map from s1 and slide a window over s2.
-    # TODO-TALK: The window size is constrained to len(s1), and valid counts track matches.
-    # TODO-TALK: If all needed character counts match inside a size-len(s1) window, permutation exists.
     window = {}
     need = {}
     for element in s1:
+        # TODO-TALK: I first record the required frequency of each character from s1.
         need[element] = need.get(element, 0) + 1
     
     left = right = valid = 0
@@ -19,6 +17,7 @@ def check_inclusion_sol1(s1: str, s2: str) -> bool:
         right+=1
         
         if expanded in need:
+            # TODO-TALK: On expansion, I only track characters that matter for s1.
             window[expanded] = window.get(expanded, 0) + 1
             if window[expanded] == need[expanded]:
                 valid += 1
@@ -28,12 +27,14 @@ def check_inclusion_sol1(s1: str, s2: str) -> bool:
             # realistically, we could change while (right - left) >= len(s1) to while (right - left) == len(s1) IF we check for len(s1) == 0 case
             # if we don't check this case, then after first expansion, we'll never be able to pass right - left >= len(s1) bc len(s1) is 0
             if valid == len(need): # we have all copies of what we need, permutation must exist
+                # TODO-TALK: All required counts match in a window of size len(s1), so permutation exists.
                 return True 
             
             shrinked = s2[left]
             left += 1
             
             if shrinked in need:
+                # TODO-TALK: On shrink, if I break an exact match, I decrement valid first.
                 if window[shrinked] == need[shrinked]:
                     valid -= 1
                 window[shrinked] -= 1

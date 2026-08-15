@@ -21,16 +21,15 @@ def middle_node_sol1(head: ListNode | None) -> ListNode | None:
 
 
 def reorder_list_sol1(head: ListNode | None) -> None:
-    # TODO-TALK: I solve this in three phases: find middle, reverse second half, then merge alternately.
-    # TODO-TALK: Splitting at the middle prevents cycles and keeps two clean chains.
-    # TODO-TALK: Alternating merge gives the exact required order L0, Ln, L1, Ln-1.
     if head is None or head.next is None:
         return
 
+    # TODO-TALK: First I find the middle so I can split the list into two halves.
     middle = middle_node_sol1(head)
 
 
     second_half = middle.next
+    # TODO-TALK: I cut the list into two independent chains here.
     middle.next = None
     if second_half is None:
         return
@@ -38,6 +37,7 @@ def reorder_list_sol1(head: ListNode | None) -> None:
     # Reverse the second half in-place (start after middle).
     prev, cur, nxt = None, second_half, second_half.next
     while cur is not None:
+        # TODO-TALK: I reverse the second half in place.
         cur.next = prev
         prev = cur
         cur = nxt
@@ -61,6 +61,7 @@ def reorder_list_sol1(head: ListNode | None) -> None:
     # 2->4 and 4->3, list becomes: 1 -> 5 -> 2 -> 4 -> 3
     # move p1=3, p2=None (stop)
     while p2 is not None:
+        # TODO-TALK: Now I weave one node from first half, one node from reversed second half.
         tmp1 = p1.next
         tmp2 = p2.next
 

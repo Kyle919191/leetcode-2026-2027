@@ -30,15 +30,15 @@ def _find_from_end(head: ListNode, k: int) -> ListNode:
 
 
 def remove_nth_from_end_sol1(head: ListNode | None, n: int) -> ListNode | None:
-    # TODO-TALK: I add a dummy node so removing the original head is handled naturally.
-    # TODO-TALK: I find the (n+1)th node from the end, then skip its next node.
-    # TODO-TALK: That skipped node is exactly the nth node from the end.
     if head is None:
         return None
+    # TODO-TALK: I use a dummy node so deleting the original head is handled the same way.
     dummy = ListNode(-1)
     dummy.next = head
     # first find n+1 th node from end
+    # TODO-TALK: I locate the node right before the node to delete.
     p1 = _find_from_end(dummy, n + 1) # have to call with dummy, not head
+    # TODO-TALK: I remove nth node from end by bypassing it.
     p1.next = p1.next.next
     return dummy.next
 

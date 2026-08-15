@@ -4,18 +4,18 @@ LeetCode 125 - Valid Palindrome
 
 
 def is_palindrome_sol1(s: str) -> bool:
-    # TODO-TALK: I will keep only alphanumeric characters and lowercase them first.
-    # TODO-TALK: Then I can compare from both ends and stop on the first mismatch.
     cleaned = []
     for elem in s:
+        # TODO-TALK: I only keep letters and digits, and I lowercase so case does not matter.
         if elem.isalnum(): # alphanumeric, exclude spaces, colons, etc
             cleaned.append(elem.lower())
     
     left, right = 0, len(cleaned) - 1
-    # TODO-TALK: Every step compares mirrored characters, then moves inward.
     while left < right: #left=right guanratees to work, so meaningless
+        # TODO-TALK: If mirrored characters differ, I can conclude it is not a palindrome.
         if cleaned[left] != cleaned[right]:
             return False
+        # TODO-TALK: If they match, I move both pointers inward and continue.
         left += 1
         right -= 1
     return True
