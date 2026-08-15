@@ -26,8 +26,21 @@ Output: False
 
 # Solution 1
 def contains_nearby_duplicate_sol1(nums: list[int], k: int) -> bool:
-    # TODO: write your first solution
-    raise NotImplementedError("Implement contains_nearby_duplicate_sol1")
+    left = right = 0
+    window = set()
+
+    while right < len(nums):
+        elem = nums[right]
+        if elem in window:
+            return True
+        window.add(elem)
+        right += 1
+
+        # could be if too
+        while right - left > k:
+            window.remove(nums[left])
+            left += 1
+    return False
 
 
 # Solution 2
@@ -70,10 +83,10 @@ def run_basic_tests(solution_func) -> None:
 
 
 if __name__ == "__main__":
-    # run_basic_tests(contains_nearby_duplicate_sol1)
+    run_basic_tests(contains_nearby_duplicate_sol1)
     # run_basic_tests(contains_nearby_duplicate_sol2)
     # run_basic_tests(contains_nearby_duplicate_sol3)
-    pass
+
 
 
 # =========================
