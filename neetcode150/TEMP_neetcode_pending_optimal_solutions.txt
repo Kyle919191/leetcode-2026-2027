@@ -10,8 +10,10 @@ Optimal solution (Hash Set) - O(n) time, O(n) space
 def contains_duplicate_sol1(nums: list[int]) -> bool:
     seen = set()
     for x in nums:
+        # TODO-TALK: If this value is already in the set, I found a duplicate.
         if x in seen:
             return True
+        # TODO-TALK: First time seeing this value, so I store it.
         seen.add(x)
     return False
 
@@ -28,14 +30,18 @@ Optimal solution (Frequency Count) - O(n) time, O(1) space for fixed alphabet
 
 def is_anagram_sol1(s: str, t: str) -> bool:
     if len(s) != len(t):
+        # TODO-TALK: Different lengths can never be anagrams.
         return False
     count = {}
     for ch in s:
+        # TODO-TALK: Build frequency counts from the first string.
         count[ch] = count.get(ch, 0) + 1
     for ch in t:
+        # TODO-TALK: If t has a character missing from s, it fails immediately.
         if ch not in count:
             return False
         count[ch] -= 1
+        # TODO-TALK: Negative means t used this character too many times.
         if count[ch] < 0:
             return False
     return True
@@ -57,8 +63,11 @@ def group_anagrams_sol1(strs: list[str]) -> list[list[str]]:
     for word in strs:
         freq = [0] * 26
         for ch in word:
+            # TODO-TALK: Map each letter to 0..25 and increment its bucket.
             freq[ord(ch) - ord('a')] += 1
+        # TODO-TALK: Tuple makes this signature hashable for dictionary keys.
         key = tuple(freq)
+        # TODO-TALK: Words with the same signature go into the same group.
         groups.setdefault(key, []).append(word)
     return list(groups.values())
 
@@ -76,14 +85,17 @@ Most optimal common solution (Bucket by frequency) - O(n) time, O(n) space
 def top_k_frequent_sol1(nums: list[int], k: int) -> list[int]:
     freq = {}
     for x in nums:
+        # TODO-TALK: Count frequency of each number first.
         freq[x] = freq.get(x, 0) + 1
 
+    # TODO-TALK: buckets[f] stores all numbers that appear exactly f times.
     buckets = [[] for _ in range(len(nums) + 1)]
     for num, f in freq.items():
         buckets[f].append(num)
 
     res = []
     for f in range(len(buckets) - 1, 0, -1):
+        # TODO-TALK: Scan from high frequency to low to collect top k quickly.
         for num in buckets[f]:
             res.append(num)
             if len(res) == k:
@@ -108,6 +120,7 @@ class CodecSol1:
     def encode(self, strs: list[str]) -> str:
         out = []
         for s in strs:
+            # TODO-TALK: Encode each string as "<length>#<content>".
             out.append(str(len(s)))
             out.append('#')
             out.append(s)
@@ -118,9 +131,11 @@ class CodecSol1:
         i = 0
         while i < len(s):
             j = i
+            # TODO-TALK: Move j to separator to parse the length prefix.
             while s[j] != '#':
                 j += 1
             length = int(s[i:j])
+            # TODO-TALK: Read exactly "length" chars after '#'.
             word = s[j + 1:j + 1 + length]
             res.append(word)
             i = j + 1 + length
@@ -143,11 +158,13 @@ def product_except_self_sol1(nums: list[int]) -> list[int]:
 
     prefix = 1
     for i in range(n):
+        # TODO-TALK: res[i] gets product of all numbers strictly to the left.
         res[i] = prefix
         prefix *= nums[i]
 
     suffix = 1
     for i in range(n - 1, -1, -1):
+        # TODO-TALK: Multiply by product of all numbers strictly to the right.
         res[i] *= suffix
         suffix *= nums[i]
 
@@ -175,8 +192,10 @@ def is_valid_sudoku_sol1(board: list[list[str]]) -> bool:
             if val == '.':
                 continue
             b = (r // 3) * 3 + (c // 3)
+            # TODO-TALK: Any repeat in row, column, or box makes board invalid.
             if val in rows[r] or val in cols[c] or val in boxes[b]:
                 return False
+            # TODO-TALK: Otherwise I record this digit in all three trackers.
             rows[r].add(val)
             cols[c].add(val)
             boxes[b].add(val)
@@ -198,10 +217,12 @@ def longest_consecutive_sol1(nums: list[int]) -> int:
     best = 0
 
     for x in num_set:
+        # TODO-TALK: Only start counting from sequence starts.
         if x - 1 in num_set:
             continue
         cur = x
         length = 1
+        # TODO-TALK: Expand forward while consecutive values exist.
         while cur + 1 in num_set:
             cur += 1
             length += 1
@@ -223,7 +244,9 @@ def max_profit_sol1(prices: list[int]) -> int:
     min_price = float('inf')
     best = 0
     for p in prices:
+        # TODO-TALK: Keep best buy price seen so far.
         min_price = min(min_price, p)
+        # TODO-TALK: Treat today as sell day and update max profit.
         best = max(best, p - min_price)
     return best
 
@@ -245,12 +268,15 @@ def max_sliding_window_sol1(nums: list[int], k: int) -> list[int]:
     res = []
 
     for i, x in enumerate(nums):
+        # TODO-TALK: Remove indices that are outside the current window.
         while q and q[0] <= i - k:
             q.popleft()
+        # TODO-TALK: Keep deque decreasing so front is always max index.
         while q and nums[q[-1]] <= x:
             q.pop()
         q.append(i)
         if i >= k - 1:
+            # TODO-TALK: Window is formed, take value at deque front as max.
             res.append(nums[q[0]])
     return res
 
@@ -273,6 +299,7 @@ def max_area_sol1(height: list[int]) -> int:
         h = min(height[left], height[right])
         best = max(best, width * h)
         if height[left] < height[right]:
+            # TODO-TALK: Move shorter side hoping to find a taller boundary.
             left += 1
         else:
             right -= 1
@@ -296,10 +323,12 @@ def trap_sol1(height: list[int]) -> int:
 
     while left < right:
         if height[left] < height[right]:
+            # TODO-TALK: Left side is limiting now, so left position is decidable.
             left_max = max(left_max, height[left])
             water += left_max - height[left]
             left += 1
         else:
+            # TODO-TALK: Right side is limiting now, so right position is decidable.
             right_max = max(right_max, height[right])
             water += right_max - height[right]
             right -= 1
