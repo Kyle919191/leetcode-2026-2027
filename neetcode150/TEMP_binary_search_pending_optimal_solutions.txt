@@ -1,0 +1,155 @@
+Temporary Study Notes - Binary Search
+Goal: Type these manually and speak TODO-TALK comments out loud while coding.
+
+==================================================
+LeetCode 704 - Binary Search
+==================================================
+def binary_search_sol1(nums: list[int], target: int) -> int:
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            return mid
+        if nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1
+
+
+==================================================
+LeetCode 74 - Search a 2D Matrix
+==================================================
+def search_matrix_sol1(matrix: list[list[int]], target: int) -> bool:
+    if not matrix or not matrix[0]:
+        return False
+    m, n = len(matrix), len(matrix[0])
+    left, right = 0, m * n - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        r, c = divmod(mid, n)
+        val = matrix[r][c]
+        # TODO-TALK: Treat matrix like a flat sorted array through index mapping.
+        if val == target:
+            return True
+        if val < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return False
+
+
+==================================================
+LeetCode 875 - Koko Eating Bananas
+==================================================
+def min_eating_speed_sol1(piles: list[int], h: int) -> int:
+    def can_finish(speed: int) -> bool:
+        hours = 0
+        for pile in piles:
+            hours += (pile + speed - 1) // speed
+        return hours <= h
+
+    left, right = 1, max(piles)
+    while left < right:
+        mid = left + (right - left) // 2
+        # TODO-TALK: If mid speed works, try smaller; otherwise speed up.
+        if can_finish(mid):
+            right = mid
+        else:
+            left = mid + 1
+    return left
+
+
+==================================================
+LeetCode 153 - Find Minimum in Rotated Sorted Array
+==================================================
+def find_min_sol1(nums: list[int]) -> int:
+    left, right = 0, len(nums) - 1
+    while left < right:
+        mid = left + (right - left) // 2
+        # TODO-TALK: Compare mid with right to decide which half contains min.
+        if nums[mid] > nums[right]:
+            left = mid + 1
+        else:
+            right = mid
+    return nums[left]
+
+
+==================================================
+LeetCode 33 - Search in Rotated Sorted Array
+==================================================
+def search_sol1(nums: list[int], target: int) -> int:
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            return mid
+        if nums[left] <= nums[mid]:
+            if nums[left] <= target < nums[mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        else:
+            if nums[mid] < target <= nums[right]:
+                left = mid + 1
+            else:
+                right = mid - 1
+    return -1
+
+
+==================================================
+LeetCode 981 - Time Based Key-Value Store
+==================================================
+class TimeMapSol1:
+    def __init__(self):
+        self.store = {}  # key -> list[(timestamp, value)]
+
+    def set(self, key: str, value: str, timestamp: int) -> None:
+        self.store.setdefault(key, []).append((timestamp, value))
+
+    def get(self, key: str, timestamp: int) -> str:
+        if key not in self.store:
+            return ""
+        arr = self.store[key]
+        left, right = 0, len(arr) - 1
+        ans = ""
+        while left <= right:
+            mid = left + (right - left) // 2
+            if arr[mid][0] <= timestamp:
+                # TODO-TALK: This value is valid candidate; search right for newer valid one.
+                ans = arr[mid][1]
+                left = mid + 1
+            else:
+                right = mid - 1
+        return ans
+
+
+==================================================
+LeetCode 4 - Median of Two Sorted Arrays
+==================================================
+def find_median_sorted_arrays_sol1(nums1: list[int], nums2: list[int]) -> float:
+    A, B = nums1, nums2
+    if len(A) > len(B):
+        A, B = B, A
+    total = len(A) + len(B)
+    half = total // 2
+
+    left, right = 0, len(A)
+    while True:
+        i = (left + right) // 2
+        j = half - i
+
+        Aleft = A[i - 1] if i > 0 else float("-inf")
+        Aright = A[i] if i < len(A) else float("inf")
+        Bleft = B[j - 1] if j > 0 else float("-inf")
+        Bright = B[j] if j < len(B) else float("inf")
+
+        # TODO-TALK: Correct partition means left max <= right min on both sides.
+        if Aleft <= Bright and Bleft <= Aright:
+            if total % 2:
+                return min(Aright, Bright)
+            return (max(Aleft, Bleft) + min(Aright, Bright)) / 2
+        elif Aleft > Bright:
+            right = i - 1
+        else:
+            left = i + 1

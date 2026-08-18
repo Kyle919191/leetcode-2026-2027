@@ -2,9 +2,28 @@
 LeetCode 36 - Valid Sudoku
 """
 
-
+# for block, we're definint 9 blocks like:
+# block0 block1 block2
+# block3 block4 block5 ...
 def is_valid_sudoku_sol1(board: list[list[str]]) -> bool:
-    raise NotImplementedError("Implement is_valid_sudoku_sol1")
+    rows = [set() for _ in range(9)] # 9 sets, one set for one row
+    cols = [set() for _ in range(9)]
+    block = [set() for _ in range(9)]
+
+    for r in range(9):
+        for c in range(9):
+            value = board[r][c]
+            if value == '.': # handle the case when it's empty
+                continue
+            b = r // 3 * 3 + c // 3 # calculate which block does this element fall in
+            # TODO-TALK: Any repeat in row, column, or box makes board invalid.
+            if value in rows[r] or value in cols[c] or value in block[b]:
+                return False
+            # TODO-TALK: Otherwise I record this digit in all three trackers.
+            rows[r].add(value)
+            cols[c].add(value)
+            block[b].add(value)
+    return True
 
 
 def is_valid_sudoku_sol2(board: list[list[str]]) -> bool:
@@ -43,7 +62,7 @@ def run_basic_tests(solution_func) -> None:
 
 
 if __name__ == "__main__":
-    # run_basic_tests(is_valid_sudoku_sol1)
+    run_basic_tests(is_valid_sudoku_sol1)
     # run_basic_tests(is_valid_sudoku_sol2)
     # run_basic_tests(is_valid_sudoku_sol3)
-    pass
+

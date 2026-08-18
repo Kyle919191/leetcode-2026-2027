@@ -2,9 +2,27 @@
 LeetCode 42 - Trapping Rain Water
 """
 
-
+# formula: water_at_i = min(max_left, max_right) - height[i]
+# where max_left[i] = max(height[0:i+1]), max_right[i] = max(height[i:])
 def trap_sol1(height: list[int]) -> int:
-    raise NotImplementedError("Implement trap_sol1")
+    left = 0
+    right = len(height) - 1
+    max_left = max_right = 0
+    water = 0
+    while left < right:
+        if height[left] <= height[right]:
+            # TODO-TALK: Left side is limiting now, so left position is decidable.
+            max_left = max(max_left, height[left])
+            # since left height is smaller, we "process" left height by the formula
+            water += max_left - height[left]
+            left += 1
+        else:
+            # TODO-TALK: Right side is limiting now, so left position is decidable.
+            max_right = max(max_right, height[right])
+            water += max_right - height[right]
+            right -= 1
+    return water
+
 
 
 def trap_sol2(height: list[int]) -> int:
@@ -35,7 +53,7 @@ def run_basic_tests(solution_func) -> None:
 
 
 if __name__ == "__main__":
-    # run_basic_tests(trap_sol1)
+    run_basic_tests(trap_sol1)
     # run_basic_tests(trap_sol2)
     # run_basic_tests(trap_sol3)
     pass

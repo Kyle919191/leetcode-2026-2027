@@ -1,0 +1,122 @@
+Temporary Study Notes - Stack
+Goal: Type these manually and speak TODO-TALK comments out loud while coding.
+
+==================================================
+LeetCode 20 - Valid Parentheses
+==================================================
+def is_valid_sol1(s: str) -> bool:
+    pairs = {')': '(', ']': '[', '}': '{'}
+    stack = []
+    for ch in s:
+        if ch in pairs:
+            # TODO-TALK: Closing bracket must match the latest opening bracket.
+            if not stack or stack[-1] != pairs[ch]:
+                return False
+            stack.pop()
+        else:
+            # TODO-TALK: Opening bracket waits for a future match.
+            stack.append(ch)
+    return len(stack) == 0
+
+
+==================================================
+LeetCode 155 - Min Stack
+==================================================
+class MinStackSol1:
+    def __init__(self):
+        self.stack = []
+        self.min_stack = []
+
+    def push(self, val: int) -> None:
+        self.stack.append(val)
+        # TODO-TALK: Track current minimum at every push.
+        if not self.min_stack:
+            self.min_stack.append(val)
+        else:
+            self.min_stack.append(min(val, self.min_stack[-1]))
+
+    def pop(self) -> None:
+        self.stack.pop()
+        self.min_stack.pop()
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    def getMin(self) -> int:
+        return self.min_stack[-1]
+
+
+==================================================
+LeetCode 150 - Evaluate Reverse Polish Notation
+==================================================
+def eval_rpn_sol1(tokens: list[str]) -> int:
+    stack = []
+    for token in tokens:
+        if token not in {"+", "-", "*", "/"}:
+            stack.append(int(token))
+            continue
+        b = stack.pop()
+        a = stack.pop()
+        # TODO-TALK: For operators, pop right operand first, then left operand.
+        if token == "+":
+            stack.append(a + b)
+        elif token == "-":
+            stack.append(a - b)
+        elif token == "*":
+            stack.append(a * b)
+        else:
+            stack.append(int(a / b))
+    return stack[-1]
+
+
+==================================================
+LeetCode 739 - Daily Temperatures
+==================================================
+def daily_temperatures_sol1(temperatures: list[int]) -> list[int]:
+    n = len(temperatures)
+    ans = [0] * n
+    stack = []  # indices, temperatures are decreasing on stack
+    for i, t in enumerate(temperatures):
+        # TODO-TALK: While current day is warmer, resolve waiting colder days.
+        while stack and temperatures[stack[-1]] < t:
+            j = stack.pop()
+            ans[j] = i - j
+        stack.append(i)
+    return ans
+
+
+==================================================
+LeetCode 853 - Car Fleet
+==================================================
+def car_fleet_sol1(target: int, position: list[int], speed: list[int]) -> int:
+    pairs = sorted(zip(position, speed), reverse=True)
+    fleets = 0
+    latest_time = 0.0
+    for p, s in pairs:
+        time = (target - p) / s
+        # TODO-TALK: A larger time behind means it cannot catch up, so new fleet.
+        if time > latest_time:
+            fleets += 1
+            latest_time = time
+    return fleets
+
+
+==================================================
+LeetCode 84 - Largest Rectangle in Histogram
+==================================================
+def largest_rectangle_area_sol1(heights: list[int]) -> int:
+    stack = []  # (start_index, height)
+    best = 0
+    for i, h in enumerate(heights):
+        start = i
+        # TODO-TALK: Pop taller bars because current shorter bar closes their range.
+        while stack and stack[-1][1] > h:
+            idx, height = stack.pop()
+            best = max(best, height * (i - idx))
+            start = idx
+        stack.append((start, h))
+    n = len(heights)
+    while stack:
+        idx, height = stack.pop()
+        best = max(best, height * (n - idx))
+    return best
