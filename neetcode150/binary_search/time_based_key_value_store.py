@@ -5,13 +5,30 @@ LeetCode 981 - Time Based Key-Value Store
 
 class TimeMapSol1:
     def __init__(self):
-        raise NotImplementedError("Implement TimeMapSol1.__init__")
+        self.store = {}
 
     def set(self, key: str, value: str, timestamp: int) -> None:
-        raise NotImplementedError("Implement TimeMapSol1.set")
+        if key not in self.store:
+            self.store[key] = []
+        self.store[key].append((timestamp, value))
+        # equivalent to self.store.setdefault(key, []).append((timestamp, value))
 
     def get(self, key: str, timestamp: int) -> str:
-        raise NotImplementedError("Implement TimeMapSol1.get")
+        if key not in self.store:
+            return ""
+        arr = self.store[key]
+        left = 0
+        right = len(arr) - 1
+        while left <= right:
+            mid = left + (right - left) // 2
+            if arr[mid][0] <= timestamp:
+                # TODO-TALK: This value is valid candidate; search right for newer valid one.
+                answer = arr[mid][1]
+                left = mid + 1
+            else:
+                right = mid - 1
+        return answer
+        
 
 
 def run_basic_tests(time_map_class) -> None:
@@ -32,5 +49,5 @@ def run_basic_tests(time_map_class) -> None:
 
 
 if __name__ == "__main__":
-    # run_basic_tests(TimeMapSol1)
-    pass
+    run_basic_tests(TimeMapSol1)
+
